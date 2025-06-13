@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Investly.G</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to bottom right, #000000, #0f2027, #203a43);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      border-radius: 20px;
+      padding: 30px 20px;
+      max-width: 400px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.6);
+      animation: fadeIn 1.5s ease;
+    }
+
+    h1 {
+      font-size: 26px;
+      margin-bottom: 10px;
+      color: #00ffcc;
+    }
+
+    .group-info {
+      font-size: 16px;
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    .rules {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      text-align: left;
+    }
+
+    .join-btn {
+      display: inline-block;
+      background: #25D366;
+      color: white;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 50px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      text-decoration: none;
+    }
+
+    .join-btn:hover {
+      background: #1ebc59;
+    }
+
+    .dashboard-link {
+      margin-top: 20px;
+      display: inline-block;
+      color: #00ffee;
+      text-decoration: underline;
+      font-size: 14px;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: scale(0.9);}
+      to {opacity: 1; transform: scale(1);}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Investly</h1>
+    <div class="group-info">
+      <p>You're welcome to our official Telegram group! 🎉</p>
+      <p><strong>Group Opens:</strong><br>⏰ 3AM - 5AM<br>⏰ 4PM - 10PM</p>
+    </div>
+
+    <div class="rules">
+      <strong>🚫 Group Rules:</strong>
+      <ul style="margin-top: 10px; padding-left: 20px; text-align: left;">
+        <li>No posting of links</li>
+        <li>No negative words or hate speech</li>
+        <li>Respect everyone</li>
+        <li>Violators will be removed immediately</li>
+      </ul>
+    </div>
+
+    <a class="join-btn" href="https://t.me/+kdJjhCDvYvkzYmU0" target="_blank">Join Telegram Group</a>
+
+    <br />
+    <a class="dashboard-link" href="dashboard.html">← Go to Dashboard</a>
+  </div>
+</body>
+</html>

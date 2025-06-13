@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Investly</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet"/>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to left, #141e30, #243b55);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #fff;
+    }
+    .container {
+      background: #111;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 0 25px rgba(0,0,0,0.5);
+      width: 350px;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      font-weight: 600;
+    }
+    .input-group {
+      position: relative;
+      margin-bottom: 20px;
+    }
+    .input-group input {
+      width: 79%;
+      padding: 12px 40px 12px 40px;
+      border: none;
+      border-radius: 10px;
+      background: #222;
+      color: #fff;
+      font-size: 16px;
+    }
+    .input-group img {
+      position: absolute;
+      top: 12px;
+      left: 10px;
+      width: 20px;
+      opacity: 0.6;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      background: #00c6ff;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #0072ff;
+    }
+    .info {
+      font-size: 13px;
+      margin-top: 15px;
+      text-align: center;
+      color: #ccc;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Investly</h2>
+    <div class="input-group">
+      <img src="https://img.icons8.com/ios-filled/50/ffffff/user.png"/>
+      <input type="text" id="fullname" placeholder="Full Name" />
+    </div>
+    <div class="input-group">
+      <img src="https://img.icons8.com/ios-filled/50/ffffff/lock.png"/>
+      <input type="password" id="password" placeholder="Password" />
+    </div>
+    <button onclick="login()">Login</button>
+    <div class="info" id="message"></div>
+  </div>
+
+  <script>
+    function login() {
+      const fullname = document.getElementById("fullname").value.trim();
+      const password = document.getElementById("password").value;
+      const msg = document.getElementById("message");
+      const userData = JSON.parse(localStorage.getItem("userData"));
+
+      if (!userData) {
+        msg.innerText = "No account found. Please sign up first.";
+        setTimeout(() => {
+          window.location.href = "signup.html";
+        }, 3000);
+        return;
+      }
+
+      if (fullname === userData.fullname && password === userData.password) {
+        msg.innerText = "Login successful. Welcome!";
+        setTimeout(() => {
+          alert("Login Successful! Welcome to your dashboard.");
+          window.location.href = "dashboard.html";
+        }, 1500);
+      } else {
+        msg.innerText = "Invalid credentials. Try again.";
+      }
+    }
+  </script>
+</body>
+</html>

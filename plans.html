@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Investly Plans</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+    body {
+      background: linear-gradient(to bottom right, #0f0c29, #302b63, #24243e);
+      color: #fff;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 1.8rem;
+    }
+    .plans {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 20px;
+    }
+    .plan {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 20px;
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      text-align: center;
+      position: relative;
+      box-shadow: 0 0 20px rgba(0, 255, 204, 0.1);
+    }
+    .plan i {
+      font-size: 2.2rem;
+      color: #00ffaa;
+      margin-bottom: 10px;
+    }
+    .plan h3 {
+      font-size: 1.2rem;
+      margin: 10px 0 5px;
+    }
+    .plan h4 {
+      font-size: 1.5rem;
+      margin-bottom: 8px;
+      color: #ffcc00;
+    }
+    .plan p {
+      font-size: 1rem;
+      margin-bottom: 15px;
+    }
+    .plan button {
+      padding: 10px 20px;
+      background: #00ccff;
+      color: #000;
+      font-weight: 600;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+    }
+    .plan button:disabled {
+      background: #888;
+      cursor: not-allowed;
+    }
+    .countdown {
+      margin-top: 10px;
+      color: #ffcc00;
+      font-size: 0.9rem;
+    }
+    .back {
+      margin-top: 30px;
+      display: block;
+      text-align: center;
+      color: #00ffaa;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Select Investment Plan</h1>
+<div class="plans" id="plansContainer"></div>
+
+<a class="back" href="dashboard.html">← Go Back to Dashboard</a>
+
+<script>
+const plans = [
+  { id: "plan1", name: "Starter Plan", amount: 2500, daily: 333, icon: "fa-coins" },
+  { id: "plan2", name: "Basic Growth", amount: 5000, daily: 700, icon: "fa-piggy-bank" },
+  { id: "plan3", name: "Advanced", amount: 10000, daily: 1400, icon: "fa-vault" },
+  { id: "plan4", name: "Elite", amount: 16000, daily: 2100, icon: "fa-gem" },
+  { id: "plan5", name: "Master Plan", amount: 30000, daily: 4200, icon: "fa-crown" }
+];
+
+const container = document.getElementById("plansContainer");
+
+function formatTimeLeft(ms) {
+  const hours = Math.floor(ms / (1000 * 60 * 60));
+  const mins = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
+  const secs = Math.floor((ms % (1000 * 60)) / 1000);
+  return `${hours}h ${mins}m ${secs}s`;
+}
+
+function updateCountdowns() {
+  plans.forEach(p => {
+    const cd = document.getElementById(`cd-${p.id}`);
+    const invest = JSON.parse(localStorage.getItem(p.id));
+    if (invest && invest.active && invest.daysLeft > 0) {
+      const now = Date.now();
+      const timePassed = now - invest.lastUpdate;
+      if (timePassed >= 86400000) {
+        let balance = parseInt(localStorage.getItem('dashboardBalance') || '0');
+        balance += p.daily;
+        localStorage.setItem('dashboardBalance', balance);
+        invest.lastUpdate = now;
+        invest.daysLeft -= 1;
+        localStorage.setItem(p.id, JSON.stringify(invest));
+      }
+      const timeLeft = 86400000 - (now - invest.lastUpdate);
+      cd.innerText = invest.daysLeft > 0 ? `Next payout in: ${formatTimeLeft(timeLeft)}` : "Completed";
+    }
+  });
+}
+
+function renderPlans() {
+  plans.forEach(p => {
+    const stored = JSON.parse(localStorage.getItem(p.id));
+    const invested = stored && stored.active;
+    const div = document.createElement("div");
+    div.className = "plan";
+    div.innerHTML = `
+      <i class="fas ${p.icon}"></i>
+      <h3>${p.name}</h3>
+      <h4>₦${p.amount.toLocaleString()}</h4>
+      <p>Earn ₦${p.daily.toLocaleString()} / day for 13 days</p>
+      <button id="btn-${p.id}" ${invested ? "disabled" : ""}>${invested ? "Invested" : "Invest Now"}</button>
+      <div class="countdown" id="cd-${p.id}">${invested ? "Calculating..." : ""}</div>
+    `;
+    container.appendChild(div);
+
+    const btn = document.getElementById(`btn-${p.id}`);
+    if (!invested) {
+      btn.onclick = () => {
+        let balance = parseInt(localStorage.getItem('dashboardBalance') || '0');
+        if (balance >= p.amount) {
+          balance -= p.amount;
+          localStorage.setItem('dashboardBalance', balance.toString());
+
+          localStorage.setItem(p.id, JSON.stringify({
+            active: true,
+            lastUpdate: Date.now(),
+            daysLeft: 13
+          }));
+
+          alert(`Successfully invested ₦${p.amount.toLocaleString()} in ${p.name}`);
+          location.reload();
+        } else {
+          alert(`Insufficient balance. You need ₦${p.amount.toLocaleString()} to invest in ${p.name}.`);
+        }
+      };
+    }
+  });
+
+  updateCountdowns();
+  setInterval(updateCountdowns, 1000);
+}
+
+renderPlans();
+</script>
+
+</body>
+</html>

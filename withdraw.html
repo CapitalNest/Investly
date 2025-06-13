@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Withdraw - Investly</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    h2 {
+      margin-top: 40px;
+      margin-bottom: 20px;
+      font-size: 1.8rem;
+      color: #00ffcc;
+    }
+
+    form {
+      width: 100%;
+      max-width: 400px;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(0, 255, 204, 0.3);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      margin-bottom: 20px;
+      font-size: 1rem;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #00ffaa;
+      color: black;
+      border: none;
+      font-weight: bold;
+      border-radius: 12px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #00ccff;
+    }
+
+    .success {
+      margin-top: 20px;
+      color: #00ffcc;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    a {
+      margin-top: 30px;
+      color: #00ffaa;
+      text-decoration: none;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Withdraw Funds</h2>
+
+<form action="https://formsubmit.co/fundrisexx@gmail.com" method="POST" onsubmit="return handleWithdraw(event)">
+  <label for="bank">Bank Name</label>
+  <input type="text" name="Bank Name" id="bank" required>
+
+  <label for="accountname">Account Name</label>
+  <input type="text" name="Account Name" id="accountname" required>
+
+  <label for="accountnumber">Account Number</label>
+  <input type="text" name="Account Number" id="accountnumber" required pattern="\d{10}" title="Enter a valid 10-digit account number">
+
+  <label for="amount">Amount to Withdraw (₦)</label>
+  <input type="number" name="Amount" id="Min ₦900" required min="900">
+
+  <input type="hidden" name="_subject" value="New Withdrawal Request from Fundify User" />
+  <input type="hidden" name="_captcha" value="false">
+
+  <button type="submit">Submit Request</button>
+  <p style="color: red; font-weight: bold;">Please use the same bank account for both deposits and withdrawals.</p>
+</form>
+
+<div class="success" id="successMsg" style="display:none;">Withdrawal submitted successfully!</div>
+
+<a href="dashboard.html">← Go Back Home</a>
+
+<script>
+  function handleWithdraw(e) {
+    e.preventDefault();
+
+    const amount = parseInt(document.getElementById("amount").value);
+    if (isNaN(amount) || amount < 1) {
+      alert("Enter a valid amount.");
+      return false;
+    }
+
+    let currentBalance = parseInt(localStorage.getItem("dashboardBalance") || "0");
+    if (amount > currentBalance) {
+      alert("Insufficient balance.");
+      return false;
+    }
+
+    // Subtract and update localStorage
+    currentBalance -= amount;
+    localStorage.setItem("dashboardBalance", currentBalance.toString());
+
+    // Allow form to submit after updating
+    document.querySelector("form").submit();
+
+    // Optionally show a success message (not visible due to redirect)
+    document.getElementById("successMsg").style.display = "block";
+    return true;
+  }
+</script>
+
+</body>
+</html>

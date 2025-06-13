@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Refer & Earn - Investly</title>
+  <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: 'Urbanist', sans-serif;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .refer-container {
+      background: #ffffff10;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+      border: 1px solid #ffffff30;
+    }
+
+    .refer-container h1 {
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 15px;
+      color: #00ffcc;
+    }
+
+    .refer-container p {
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 25px;
+      color: #d4d4d4;
+    }
+
+    .btn {
+      background: #00ffcc;
+      color: #000;
+      border: none;
+      padding: 12px 20px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-bottom: 15px;
+    }
+
+    .btn:hover {
+      background: #00e6b8;
+    }
+
+    .code-box {
+      background: #ffffff15;
+      border: 1px dashed #00ffcc;
+      padding: 10px 15px;
+      border-radius: 12px;
+      font-weight: bold;
+      font-size: 18px;
+      margin-top: 10px;
+      color: #00ffcc;
+      word-break: break-word;
+    }
+
+    .footer-note {
+      font-size: 13px;
+      margin-top: 20px;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <div class="refer-container">
+    <h1>Refer & Earn</h1>
+    <p>Refer <strong>10 people</strong> and get <strong>₦9,000</strong> instantly! Share your code and start earning.</p>
+
+    <button class="btn" onclick="generateReferralCode()">Get Referral Code</button>
+    <div id="referralCode" class="code-box" style="display: none;"></div>
+
+    <!-- <div class="footer-note">Your code is unique and stays with you unless you reset your browser data.</div> -->
+  </div>
+
+  <script>
+    function generateReferralCode() {
+      let code = localStorage.getItem('userReferralCode');
+      if (!code) {
+        const random = Math.random().toString(36).substring(2, 10).toUpperCase();
+        const date = new Date().getTime().toString().slice(-4);
+        code = 'REF-' + random + date;
+        localStorage.setItem('userReferralCode', code);
+      }
+
+      const codeBox = document.getElementById('referralCode');
+      codeBox.innerText = code;
+      codeBox.style.display = 'block';
+    }
+
+    // Automatically show code if already generated
+    window.onload = () => {
+      if (localStorage.getItem('userReferralCode')) {
+        generateReferralCode();
+      }
+    };
+  </script>
+</body>
+</html>

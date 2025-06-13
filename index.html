@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Investly</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet"/>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #fff;
+    }
+    .container {
+      background: #111;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 0 25px rgba(0,0,0,0.5);
+      width: 350px;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      font-weight: 600;
+    }
+    .input-group {
+      position: relative;
+      margin-bottom: 20px;
+    }
+    .input-group input {
+      width: 79%;
+      padding: 12px 40px 12px 40px;
+      border: none;
+      border-radius: 10px;
+      background: #222;
+      color: #fff;
+      font-size: 16px;
+    }
+    .input-group img {
+      position: absolute;
+      top: 12px;
+      left: 10px;
+      width: 20px;
+      opacity: 0.6;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      background: #00c6ff;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #0072ff;
+    }
+    .info {
+      font-size: 13px;
+      margin-top: 15px;
+      text-align: center;
+      color: #ccc;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Investly</h2>
+    <div class="input-group">
+      <img src="https://img.icons8.com/ios-filled/50/ffffff/user.png"/>
+      <input type="text" id="fullname" placeholder="Full Name" required />
+    </div>
+    <div class="input-group">
+      <img src="https://img.icons8.com/ios-filled/50/ffffff/email.png"/>
+      <input type="email" id="email" placeholder="Email" required />
+    </div>
+    <div class="input-group">
+      <img src="https://img.icons8.com/ios-filled/50/ffffff/lock.png"/>
+      <input type="password" id="password" placeholder="Password" required />
+    </div>
+    <div class="input-group">
+      <img src="https://img.icons8.com/ios-filled/50/ffffff/lock.png"/>
+      <input type="password" id="confirm" placeholder="Confirm Password" required />
+    </div>
+    <div class="input-group">
+      <img src="https://th.bing.com/th/id/OIP.0UCUAVesR6yFb8d1hacrywHaHa?r=0&rs=1&pid=ImgDetMain"/>
+      <input type="text" id="" placeholder="Referral code ?"  />
+    </div>
+    <button onclick="signUp()">Sign Up</button>
+    <div class="info" id="message"></div>
+  </div>
+
+  <script>
+    if (localStorage.getItem("userData")) {
+      document.getElementById("message").innerText = "You have already signed up on this device. Redirecting to login...";
+      setTimeout(() => {
+        window.location.href = "login.html";
+      }, 3000);
+    }
+
+    function signUp() {
+      const fullname = document.getElementById("fullname").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+      const confirm = document.getElementById("confirm").value;
+      const msg = document.getElementById("message");
+
+      if (!fullname || !email || !password || !confirm) {
+        msg.innerText = "All fields are required.";
+        return;
+      }
+
+      if (password !== confirm) {
+        msg.innerText = "Passwords do not match.";
+        return;
+      }
+
+      const userData = {
+        fullname,
+        email,
+        password
+      };
+      localStorage.setItem("userData", JSON.stringify(userData));
+      msg.innerText = "Sign up successful! Redirecting to login...";
+      setTimeout(() => {
+        window.location.href = "login.html";
+      }, 2000);
+    }
+  </script>
+</body>
+</html>

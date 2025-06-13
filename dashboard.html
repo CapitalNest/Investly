@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Investly.io</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<style>
+/* --- Your original styles below --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.loader {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.loader span {
+  width: 20px; height: 20px;
+  margin: 8px;
+  background: #00ff99;
+  border-radius: 50%;
+  animation: bounce 0.8s infinite alternate;
+}
+
+.loader span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.loader span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+  to {
+    transform: translateY(-20px);
+    background: #00ccff;
+  }
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 20px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+}
+
+.logo {
+  font-size: 1.4rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo i {
+  color: #00ffcc;
+}
+
+.plans-btn {
+  padding: 10px 20px;
+  border: none;
+  background: #00ccff;
+  color: #000;
+  border-radius: 25px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.plans-btn:hover {
+  background: #00ffaa;
+}
+
+.balance-section {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.balance-section h2 {
+  font-size: 1.6rem;
+  margin-bottom: 10px;
+}
+
+.balance-section p {
+  font-size: 1.2rem;
+  color: #00ffaa;
+}
+
+.convert-btn {
+  margin-top: 20px;
+  padding: 10px 25px;
+  background: #ffcc00;
+  color: #000;
+  border: none;
+  border-radius: 30px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.convert-btn:hover {
+  background: #ffd633;
+}
+
+nav {
+  margin-top: auto;
+  background: #1a1a2e;
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  border-top: 1px solid #333;
+}
+
+nav a {
+  color: #ccc;
+  text-decoration: none;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+nav i {
+  display: block;
+  font-size: 1.4rem;
+  margin-bottom: 5px;
+}
+
+nav a.active, nav a:hover {
+  color: #00ffcc;
+}
+</style>
+</head>
+<body>
+
+<div class="loader" id="loader" aria-label="Loading animation">
+  <span></span><span></span><span></span>
+</div>
+
+<header>
+  <div class="logo"><i class="fas fa-coins" aria-hidden="true"></i> Fundify</div>
+<a style="border: none; outline: none;" href="./plans.html">  <button class="plans-btn" type="button">Plans</button>
+</a>
+</header>
+
+<main class="balance-section">
+  <h2>Your Balance</h2>
+  <p id="balance" aria-live="polite">₦0</p>
+  <button class="convert-btn" type="button" onclick="convertBalance()">Convert to USDT</button>
+  <br><br><p><a style="outline: none; border: none; color: rgb(22, 173, 22); text-decoration: none;" href="refer.html">Refer</a></p>
+</main>
+
+<nav role="navigation" aria-label="Main navigation">
+  <a href="#" class="active"><i class="fas fa-home" aria-hidden="true"></i>Home</a>
+  <a href="./deposit.html"><i class="fas fa-wallet" aria-hidden="true"></i>Deposit</a>
+  <a href="./withdraw.html"><i class="fas fa-money-bill-wave" aria-hidden="true"></i>Withdraw</a>
+  <a href="./groups.html"><i class="fas fa-users" aria-hidden="true"></i>Public Group</a>
+</nav>
+
+<script>
+  window.onload = () => {
+    // 1) Initialize dashboardBalance with 0 if not present
+    if (!localStorage.getItem('dashboardBalance')) {
+      localStorage.setItem('dashboardBalance', '0');
+    }
+
+    // 2) If a pendingDepositAmount exists, add it to dashboardBalance and clear it
+    const pending = localStorage.getItem('pendingDepositAmount');
+    if (pending && !isNaN(pending)) {
+      let currentBalance = parseInt(localStorage.getItem('dashboardBalance'), 10);
+      currentBalance += parseInt(pending, 10);
+      localStorage.setItem('dashboardBalance', currentBalance.toString());
+      localStorage.removeItem('pendingDepositAmount');
+    }
+
+    // 3) Display current balance properly formatted
+    const currentBalance = localStorage.getItem('dashboardBalance');
+    const balanceEl = document.getElementById('balance');
+    balanceEl.innerText = `₦${Number(currentBalance).toLocaleString()}`;
+
+    // 4) Hide loader after 2 seconds
+    setTimeout(() => {
+      const loader = document.getElementById('loader');
+      if (loader) loader.style.display = 'none';
+    }, 2000);
+  };
+
+  function convertBalance() {
+    const balanceEl = document.getElementById("balance");
+    const text = balanceEl.innerText.replace(/[₦,]/g, '');
+    if (!balanceEl.innerText.includes("USDT")) {
+      const naira = parseFloat(text);
+      const usdtRate = 1500;
+      const usdt = (naira / usdtRate).toFixed(2);
+      balanceEl.innerText = `${usdt} USDT`;
+    } else {
+      const storedBalance = localStorage.getItem('dashboardBalance') || '0';
+      balanceEl.innerText = `₦${Number(storedBalance).toLocaleString()}`;
+    }
+  }
+</script>
+
+</body>
+</html>
